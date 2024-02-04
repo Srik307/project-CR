@@ -1,17 +1,17 @@
-const strings={'btnav':`<div style="display:flex;flex-direction:row;position: fixed;bottom: 0;left:0; justify-content:space-around;width: 100%;border-top: 2px solid rgba(0, 0, 0, 0.5);padding: 15 0 20;align-items: center;">
+const strings={'btnav':`<div style="display:flex;flex-direction:row;position: fixed;bottom: 0;left:0; justify-content:space-around;width: 100%;border-top: 2px solid rgba(0, 0, 0, 0.7);padding: 15 0 10;align-items: center;border-radius:10px;background-color:#ffffff;">
 <div onclick="navigate('home')">
-    <svg id="home"  width="30" height="30" viewBox="0 0 13 10" fill="black" fill-opacity="0.55" xmlns="http://www.w3.org/2000/svg" >
+    <svg id="home"  width="25" height="30" viewBox="0 0 13 10" fill="black" fill-opacity="0.55" xmlns="http://www.w3.org/2000/svg" >
         <path d="M6.5 -0.00976372L0.536377 5.09961L1.08862 5.65039L1.625 5.19043V9.5H5.6875V5.75H7.3125V9.5H11.375V5.19043L11.9114 5.65039L12.4636 5.09961L6.5 -0.00976372ZM6.5 1.00977L10.5625 4.4961V8.75H8.125V5H4.875V8.75H2.4375V4.4961L6.5 1.00977Z" />
         </svg>                
 </div>
 <div onclick="navigate('msg')">
-    <svg id="msg"  width="28" height="28" viewBox="0 0 13 12" fill="black" fill-opacity="0.55" xmlns="http://www.w3.org/2000/svg">
+    <svg id="msg"  width="20" height="28" viewBox="0 0 13 12" fill="black" fill-opacity="0.55" xmlns="http://www.w3.org/2000/svg">
         <path d="M12.1183 7.78036H10.9478V4.85627C10.9478 3.34994 9.87326 2.07106 8.39464 1.63806C8.36674 0.730526 7.5588 0 6.56898 0H6.53798C5.55909 0 4.7577 0.714431 4.71319 1.60804C3.1792 2.00922 2.05213 3.31352 2.05213 4.85627V7.78036H0.881714V10.5533H4.66225C4.80358 11.3721 5.57375 12 6.49998 12C7.42621 12 8.19637 11.3721 8.3377 10.5533H12.1182V7.78036H12.1183ZM6.53798 0.542523H6.56898C7.18841 0.542523 7.70315 0.964209 7.79397 1.51292C7.62952 1.49194 7.46167 1.48084 7.29107 1.48084H5.70885C5.57594 1.48084 5.44468 1.4876 5.31542 1.50044C5.41197 0.957879 5.92329 0.542523 6.53798 0.542523ZM6.49998 11.4574C5.89896 11.4574 5.39422 11.071 5.26115 10.5532H7.7388C7.60574 11.071 7.101 11.4574 6.49998 11.4574ZM11.5305 10.0107H1.46945V8.32285H2.6399V4.85624C2.6399 3.29417 4.01665 2.02332 5.70889 2.02332H7.29111C8.98335 2.02332 10.3601 3.29417 10.3601 4.85624V8.32285H11.5305V10.0107Z"/>
         </svg>
         
 </div>
 <div onclick="navigate('tasks')">
-    <svg id="tasks"  fill="black" fill-opacity="0.55"  height="24" width="28" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    <svg id="tasks"  fill="black" fill-opacity="0.55"  height="20" width="20" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
     viewBox="0 0 470.767 470.767" xml:space="preserve">
 <g>
    <path d="M362.965,21.384H289.62L286.638,7.99C285.614,3.323,281.467,0,276.685,0h-82.618c-4.782,0-8.913,3.323-9.953,7.99
@@ -38,9 +38,12 @@ const strings={'btnav':`<div style="display:flex;flex-direction:row;position: fi
 </svg>
 </div>
 <div onclick="navigate('acc')">
-    <svg id="acc" class="feather feather-user"  height="28" fill="black" fill-opacity="0.55"  viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"  /><circle cx="12" cy="7" r="4" /></svg> 
+    <svg id="acc" class="feather feather-user"  height="28" fill="black" fill-opacity="0.55"  viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"  /><circle cx="12" cy="7" r="4" /></svg> 
 </div>
 </div>`} 
+
+
+const bg=['#EC8870','#11B1FB','#F2BDE9','#7EAAFF','#3AD29F']
  
  
  
@@ -61,11 +64,7 @@ const strings={'btnav':`<div style="display:flex;flex-direction:row;position: fi
  
  window.addEventListener('load',()=>{
 
-    document.getElementById('btnav').innerHTML=strings['btnav'];
-
-
-
-
+   document.getElementById('btnav').innerHTML=strings['btnav'];
    const curpage=localStorage.getItem('curpage');
    console.log(curpage);
    if(curpage==null || curpage==undefined){

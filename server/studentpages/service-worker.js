@@ -1,5 +1,10 @@
 const CACHE_NAME = 'my-pwa-cache-v1';
 const STATIC_ASSETS = [
+  '/',
+  '/index.html',
+  '/account.html',
+  '/tasks.html',
+  '/messages.html',
   '/manifest.json',
   '/log.png',
 ];

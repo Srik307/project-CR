@@ -13,6 +13,7 @@ let deferredPrompt;
 
 window.addEventListener('beforeinstallprompt', (e) => {
     deferredPrompt = e;
+    console.log(e);
     });
 
 
