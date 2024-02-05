@@ -1,3 +1,67 @@
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      .then((registration) => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch((error) => {
+        console.error('Service Worker registration failed:', error);
+      });
+  } else {
+    console.warn('Service Workers are not supported in this browser.');
+  }
+ 
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDt1YfTFmYL889yQrbPWRfsUyh6psiJsbI",
+    authDomain: "project-cr-409fb.firebaseapp.com",
+    projectId: "project-cr-409fb",
+    storageBucket: "project-cr-409fb.appspot.com",
+    messagingSenderId: "376536481258",
+    appId: "1:376536481258:web:b2616c3c1fe07ec0590693"
+  };
+  
+  const app=firebase.initializeApp(firebaseConfig);
+  
+  const messaging=app.messaging();
+  
+  // Request permission for notifications
+  Notification.requestPermission().then((permission) => {
+    if (permission === 'granted') {
+      console.log('Permission granted!');
+      // Proceed to subscribe
+    } else {
+      console.log('Permission not granted.');
+    }
+  });
+  
+  // Subscribe to topics or FCM tokens (modify as needed)
+  messaging.getToken().then((currentToken) => {
+    if (currentToken) {
+      document.getElementById('tok').textContent=currentToken;
+      console.log('Device registered with token:', currentToken);
+      // Send token to your server for association with users, if needed
+    } else {
+      console.log('No registration token available. Request permission to generate one.');
+    }
+  }).catch((err) => {
+    console.error('An error occurred while retrieving token:', err);
+  });
+  
+  // Handle incoming messages directly or redirect to background handler
+  messaging.onMessage((payload) => {
+    console.log('Message received:', payload);
+    // Display notification or handle in service worker, if applicable
+  });
+
+
+
+
+
+
+
+
+
+
 const strings={'btnav':`<div style="display:flex;flex-direction:row;position: fixed;bottom: 0;left:0; justify-content:space-around;width: 100%;border-top: 2px solid rgba(0, 0, 0, 0.7);padding: 15 0 10;align-items: center;border-radius:10px;background-color:#ffffff;">
 <div onclick="navigate('home')">
     <svg id="home"  width="25" height="30" viewBox="0 0 13 10" fill="black" fill-opacity="0.55" xmlns="http://www.w3.org/2000/svg" >
