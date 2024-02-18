@@ -9,8 +9,9 @@ if ('serviceWorker' in navigator) {
   } else {
     console.warn('Service Workers are not supported in this browser.');
   }
- 
 
+
+var Sdata={};
   const firebaseConfig = {
     apiKey: "AIzaSyDt1YfTFmYL889yQrbPWRfsUyh6psiJsbI",
     authDomain: "project-cr-409fb.firebaseapp.com",
@@ -24,6 +25,8 @@ if ('serviceWorker' in navigator) {
   
   const messaging=app.messaging();
   
+  const db=app.firestore();
+
   // Request permission for notifications
   Notification.requestPermission().then((permission) => {
     if (permission === 'granted') {
@@ -36,15 +39,15 @@ if ('serviceWorker' in navigator) {
   
   // Subscribe to topics or FCM tokens (modify as needed)
   messaging.getToken().then((currentToken) => {
-    if (currentToken) {
-      document.getElementById('tok').textContent=currentToken;
+    if (currentToken){
       console.log('Device registered with token:', currentToken);
       // Send token to your server for association with users, if needed
-    } else {
+    }else{
       console.log('No registration token available. Request permission to generate one.');
     }
-  }).catch((err) => {
+  }).catch((err)=>{
     console.error('An error occurred while retrieving token:', err);
+    window.location.reload();
   });
   
   // Handle incoming messages directly or redirect to background handler
@@ -127,14 +130,19 @@ const bg=['#EC8870','#11B1FB','#F2BDE9','#7EAAFF','#3AD29F']
  
  
  window.addEventListener('load',()=>{
-
-   document.getElementById('btnav').innerHTML=strings['btnav'];
+  document.getElementById('btnav').innerHTML=strings['btnav'];
+  if(!localStorage.getItem('SMain')){
+    window.location.replace("./login.html");
+  }
    const curpage=localStorage.getItem('curpage');
    console.log(curpage);
    if(curpage==null || curpage==undefined){
     setbright('home');
    }else{
     setbright(curpage);
+    setTimeout(()=>{
+      localStorage.setItem('curpage','home');
+    },200);
    }
  });
 
@@ -153,5 +161,12 @@ function setbright(x){
 function navigate(x){
     localStorage.setItem('curpage',x);
     const dict={'home':'index','tasks':'tasks','acc':'account','msg':'messages'}
+    console.log(dict[x]);
     window.location.replace(`./${dict[x]}.html`);
+}
+
+
+
+function fetchdata(){
+  var uid=localStorage.getItem('uid');
 }

@@ -2,6 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="./manifest.json"/>
     <title>Sign-Up</title>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -12,8 +13,11 @@
         <h1>Verify It's you?</h1>
         <input type="email" id="mail" placeholder="abcde@citchennai.net.com">
         <button onclick="verify()" id="ver">Send Link</button>
-    </div>
+    
+    
+        <p onclick="loginupage()">Already have an account - <b>Login Page</b></p>
 
+    </div>
     <div style="display:none;" id="create">
         <form>
             <div>
@@ -44,18 +48,17 @@
   };
     const app=firebase.initializeApp(firebaseConfig); 
     const auth = app.auth();
+    const db = app.firestore();
 
 setTimeout(()=>{
-if(localStorage.getItem('nxt')){
-        console.log("hello",auth.currentUser.uid);
+if(localStorage.getItem('nxt')=='1'){
     if(auth.currentUser.emailVerified){
         document.getElementById('verify').style.display='none';
         document.getElementById('create').style.display='block';
         localStorage.setItem('email',auth.currentUser.email)
-        localStorage.setItem('uid',auth.currentUser.uid)
     }
 }
-},600);
+},1000);
 
 
 
@@ -69,6 +72,7 @@ function verify(x){
     mail=document.getElementById('mail').value;
     if(mail==""){
         alert("please fill email!!");
+
         return;
     }
     if(x!=undefined){
@@ -95,23 +99,31 @@ function verify(x){
         if(auth.currentUser!=null){
             if(!auth.currentUser.emailVerified){
                 deletu();
+        }else{
+            alert("Account already Exists");
         }
           }
           else{
-            firebase.auth().signInWithEmailAndPassword(mail, "89163310@")
+            if(auth){
+            auth.signInWithEmailAndPassword(mail, "89163310@")
   .then((userCredential) => {
     deletu();
   }).catch((err)=>{
+    console.log('ok');
     alert('Account Already Exists!!');
-  });
+  });}
+  alert('Account Already Exists!!');
             }
         });
 }
 
 function signout(x){
-    auth.signOut().then(()=>{localStorage.removeItem('nxt');console.log('logged out');})
+    auth.signOut().then(()=>{console.log('logged out');localStorage.setItem('nxt','');})
     if(x){
      window.location.reload()   
+    }
+    else{
+        window.location.replace("/login.html");
     }
 }
 
@@ -122,6 +134,8 @@ function deletu(){
             console.log("del");       
             alert("Please retry again")
             document.getElementById('ver').textContent="Retry"
+    }).catch((err)=>{
+        alert("Account already exists");
     });
 }
 
@@ -133,6 +147,7 @@ function checkstatus(){
 
 
 function signup(){
+    mail=localStorage.getItem('email');
     var pass=document.getElementById('pass').value;
     var cpass=document.getElementById('cpass').value;
     if((pass==="" || cpass==="") || pass!=cpass){
@@ -141,8 +156,27 @@ function signup(){
     }
     auth.currentUser.updatePassword(pass).then(() => {
     console.log("password changed");
-    signout();
-})
+    db.collection('Static').where("em","==",mail).get().then((q) =>{
+        console.log(q);
+        if(q.length==0){
+            alert('No linked account found!!');
+        }
+        var d={}
+        q.forEach((i)=>{
+        d=i.data();
+        console.log(d);
+    });
+        localStorage.setItem('SMain',JSON.stringify(d));
+        db.collection('SIndex').doc(auth.currentUser.uid).set({"rno":d['rno'],'ct':[],'uct':[]}).then(()=>{
+            console.log('created');
+            signout();
+        });
+    });
+});
+}
+
+function loginupage(){
+    window.location.replace("/login.html");
 }
 </script>
 </body>

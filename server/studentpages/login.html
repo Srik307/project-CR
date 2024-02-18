@@ -3,10 +3,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="manifest" href="./manifest.json"/>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 </head>
 <body>
+    <h1>Login Page</h1>
     <div>
-        <input type="email">
+        <input type="email" placeholder="emailID" id="mail">
+        <input type="password" id="pass" placeholder="Password" />
+        <input type="button" value="Login" onclick="Login()"/>
     </div>
+    <div>
+        <p onclick="signupage()">If not signed up yet??, <b>Signup now</b></p>
+    </div>
+
+
+
+
+
+
+
+
+  <script>
+    
+    const firebaseConfig = {
+    apiKey: "AIzaSyDt1YfTFmYL889yQrbPWRfsUyh6psiJsbI",
+    authDomain: "project-cr-409fb.firebaseapp.com",
+    projectId: "project-cr-409fb",
+    storageBucket: "project-cr-409fb.appspot.com",
+    messagingSenderId: "376536481258",
+    appId: "1:376536481258:web:b2616c3c1fe07ec0590693"
+  };
+    const app=firebase.initializeApp(firebaseConfig); 
+    const auth = app.auth();
+    const db=app.firestore();
+
+
+function Login(){
+    const mail=document.getElementById('mail').value;
+    const pass=document.getElementById('pass').value;
+ auth.signInWithEmailAndPassword(mail, pass)
+  .then((userCredential) => {
+    console.log("Logged IN");
+  localStorage.setItem('uid',auth.currentUser.uid);
+  db.collection('Static').where("em","==",mail).get().then((q) =>{
+        console.log(q);
+        if(q.length==0){
+            alert('No linked account found!!');
+        }
+        var d={}
+        q.forEach((i)=>{
+        d=i.data();
+        localStorage.setItem('SMain',JSON.stringify(d));
+    auth.signOut().then(()=>{
+    window.location.replace('/index.html');
+  });
+    });});
+  }).catch((err)=>{
+    console.log(err);
+    alert("No user account found!!");
+  });
+    }
+
+
+function signupage(){
+    window.location.replace("/signup.html");
+}
+  </script>  
 </body>
 </html>

@@ -40,12 +40,16 @@ messaging.onBackgroundMessage((payload) => {
 const CACHE_NAME = 'my-pwa-cache-v1';
 const STATIC_ASSETS = [
   '/',
+  '/login.html',
+  '/signup.html',
   '/index.html',
   '/account.html',
   '/tasks.html',
   '/messages.html',
   '/manifest.json',
   '/log.png',
+  '/main.js',
+  '/firebase-messaging-sw.js'
 ];
 
 self.addEventListener('install', (event) => {
