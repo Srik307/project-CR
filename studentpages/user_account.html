@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /*CSS styles*/
+          body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #3498db, #2c3e50);
+        }
+
+        .dashboard-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: linear-gradient(to right, #ecf0f1, #bdc3c7);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+        }
+
+        .home-button {
+            padding: 10px;
+            background: #3498db;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .home-button:hover {
+            background: #2980b9;
+        }
+
+        .details-section {
+            padding: 20px;
+            display: flex;
+            flex-direction: column; 
+        }
+
+        .profile-details {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            text-align: center; 
+        }
+
+        #profile-image {
+            max-width: 100px; 
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        #name {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        #department {
+            font-size: 18px;
+        }
+
+        .other-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .details-item {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .details-item label {
+            width: 120px; 
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        span {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+        }
+    </style>
+    <title>Student Dashboard</title>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <a href="#" class="home-button">Home</a>
+        </div>
+        <div class="details-section" id="detailsSection">
+            <!-- Content will be dynamically added here using JavaScript -->
+        </div>
+
+        <script>
+            // Sample data (replace with actual data)
+            var studentData = {
+                profileImage: "https://i.pinimg.com/originals/51/90/10/519010d9ee8167bfe445e616f260f758.png",
+                name: "John Doe",
+                department: "Computer Science and Business Systems",
+                rollNo: "CB12345",
+                email: "john.doe@example.com",
+                phoneNo: "123-456-7890",
+                dob: "January 1, 2004"
+            };
+
+            // Function to create and append elements to the detailsSection
+            function createDetailsElement(label, content) {
+                var detailsItem = document.createElement("div");
+                detailsItem.className = "details-item";
+
+                var labelElement = document.createElement("label");
+                labelElement.textContent = label;
+
+                var spanElement = document.createElement("span");
+                spanElement.textContent = content;
+
+                detailsItem.appendChild(labelElement);
+                detailsItem.appendChild(spanElement);
+
+                return detailsItem;
+            }
+
+            // Create and append elements to the detailsSection
+            var detailsSection = document.getElementById("detailsSection");
+
+            var profileDetails = document.createElement("div");
+            profileDetails.className = "profile-details";
+
+            var profileImage = document.createElement("img");
+            profileImage.src = studentData.profileImage;
+            profileImage.alt = "Profile Image";
+            profileImage.id = "profile-image";
+
+            var nameDepartment = document.createElement("div");
+            nameDepartment.className = "name-department";
+
+            var nameElement = document.createElement("h2");
+            nameElement.id = "name";
+            nameElement.textContent = studentData.name;
+
+            var departmentElement = document.createElement("div");
+            departmentElement.id = "department";
+            departmentElement.textContent = studentData.department;
+
+            nameDepartment.appendChild(nameElement);
+            nameDepartment.appendChild(departmentElement);
+
+            profileDetails.appendChild(profileImage);
+            profileDetails.appendChild(nameDepartment);
+
+            detailsSection.appendChild(profileDetails);
+
+            // Additional details
+            detailsSection.appendChild(createDetailsElement("Roll No:", studentData.rollNo));
+            detailsSection.appendChild(createDetailsElement("Email:", studentData.email));
+            detailsSection.appendChild(createDetailsElement("Phone No:", studentData.phoneNo));
+            detailsSection.appendChild(createDetailsElement("Date of Birth:", studentData.dob));
+
+        </script>
+    </div>
+</body>
+</html>

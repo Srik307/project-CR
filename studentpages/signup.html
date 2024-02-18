@@ -1,0 +1,183 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="./manifest.json"/>
+    <title>Sign-Up</title>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <div id="verify">
+        <h1>Verify It's you?</h1>
+        <input type="email" id="mail" placeholder="abcde@citchennai.net.com">
+        <button onclick="verify()" id="ver">Send Link</button>
+    
+    
+        <p onclick="loginupage()">Already have an account - <b>Login Page</b></p>
+
+    </div>
+    <div style="display:none;" id="create">
+        <form>
+            <div>
+                <input id="pass" type="password" placeholder="password">
+            </div>
+            <div>
+                <input type="text" id="cpass" placeholder="confirm password">
+            </div>
+            <div>
+               <input type="button" value="SignUp"  onclick="signup()"/>
+            </div>
+        </form>
+    </div>
+<script>
+
+
+
+
+
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyDt1YfTFmYL889yQrbPWRfsUyh6psiJsbI",
+    authDomain: "project-cr-409fb.firebaseapp.com",
+    projectId: "project-cr-409fb",
+    storageBucket: "project-cr-409fb.appspot.com",
+    messagingSenderId: "376536481258",
+    appId: "1:376536481258:web:b2616c3c1fe07ec0590693"
+  };
+    const app=firebase.initializeApp(firebaseConfig); 
+    const auth = app.auth();
+    const db = app.firestore();
+
+setTimeout(()=>{
+if(localStorage.getItem('nxt')=='1'){
+    if(auth.currentUser.emailVerified){
+        document.getElementById('verify').style.display='none';
+        document.getElementById('create').style.display='block';
+        localStorage.setItem('email',auth.currentUser.email)
+    }
+}
+},1000);
+
+
+
+var mail;
+function verify(x){
+    if(x!=undefined){
+        auth.signOut().then(()=>{
+            window.location.reload();
+        });
+    }
+    mail=document.getElementById('mail').value;
+    if(mail==""){
+        alert("please fill email!!");
+
+        return;
+    }
+    if(x!=undefined){
+    if(mail===auth.currentUser.email){
+        alert("Already link sent !!");
+        document.getElementById('verify').innerHTML=`<h4>Verification link sent to ${mail}.<br>If verified means click next to create account..</h4>
+        <button onclick="checkstatus()">Next</button>
+        <button onclick="verify('1')">Send link Again</button>`
+    }
+}
+
+
+
+
+    auth.createUserWithEmailAndPassword(mail, "89163310@")
+        .then((userCredential)=>{
+          auth.currentUser.sendEmailVerification()
+          .then(()=>{alert("mail has been sent");
+          document.getElementById('verify').innerHTML=`<h4>Verification link sent to ${mail}.<br>If verified means click next to create account..</h4>
+        <button onclick="checkstatus()">Next</button>`
+          });
+        }).catch((err)=>{
+            console.log(err);
+        if(auth.currentUser!=null){
+            if(!auth.currentUser.emailVerified){
+                deletu();
+        }else{
+            alert("Account already Exists");
+        }
+          }
+          else{
+            if(auth){
+            auth.signInWithEmailAndPassword(mail, "89163310@")
+  .then((userCredential) => {
+    deletu();
+  }).catch((err)=>{
+    console.log('ok');
+    alert('Account Already Exists!!');
+  });}
+  alert('Account Already Exists!!');
+            }
+        });
+}
+
+function signout(x){
+    auth.signOut().then(()=>{console.log('logged out');localStorage.setItem('nxt','');})
+    if(x){
+     window.location.reload()   
+    }
+    else{
+        window.location.replace("/login.html");
+    }
+}
+
+
+
+function deletu(){
+    auth.currentUser.delete().then(() => {
+            console.log("del");       
+            alert("Please retry again")
+            document.getElementById('ver').textContent="Retry"
+    }).catch((err)=>{
+        alert("Account already exists");
+    });
+}
+
+
+function checkstatus(){
+    localStorage.setItem('nxt','1');
+    window.location.reload();
+}
+
+
+function signup(){
+    mail=localStorage.getItem('email');
+    var pass=document.getElementById('pass').value;
+    var cpass=document.getElementById('cpass').value;
+    if((pass==="" || cpass==="") || pass!=cpass){
+        alert("Password and cpass not matches!!");
+        return;
+    }
+    auth.currentUser.updatePassword(pass).then(() => {
+    console.log("password changed");
+    db.collection('Static').where("em","==",mail).get().then((q) =>{
+        console.log(q);
+        if(q.length==0){
+            alert('No linked account found!!');
+        }
+        var d={}
+        q.forEach((i)=>{
+        d=i.data();
+        console.log(d);
+    });
+        localStorage.setItem('SMain',JSON.stringify(d));
+        db.collection('SIndex').doc(auth.currentUser.uid).set({"rno":d['rno'],'ct':[],'uct':[]}).then(()=>{
+            console.log('created');
+            signout();
+        });
+    });
+});
+}
+
+function loginupage(){
+    window.location.replace("/login.html");
+}
+</script>
+</body>
+</html>
